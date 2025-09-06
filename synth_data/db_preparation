@@ -1,0 +1,75 @@
+SCHEMA
+
+COMPANY
+TABLE COMPANY.DEPARTMENTS
+
+/department_id UUID e7a1a3d0-6c8b-4f2b-9e7c-6d1b1f6b0a11
+/code TEXT--    HR 
+                AUD 
+                FIN 
+                MNG 
+                DVLP 
+                DES 
+                MRKT
+                RND // closed
+/name TEXT --   HumanResources  
+                Audit  
+                Finance
+                Management
+                Develop
+                Design
+                Marketing
+                Research & Dev // closed
+/created_at — TIMESTAMPTZ — 2025-09-04 10:15:00+00
+/updated_at — TIMESTAMPTZ — 2025-09-04 10:15:00+00
+
+
+TABLE COMPANY.EMPLOYEES
+
+/employee_id — UUID — 0f3b2f5a-3f2c-4d0a-8ca3-2d3d7a9c5d10
+/employee_no — TEXT — E-00123
+/first_name — TEXT — Anna
+/last_name — TEXT — Schmidt
+/date_of_birth — DATE — 1992-05-14
+/email_work — TEXT — anna.schmidt@company.example
+/phone_work — TEXT — +49-30-1234567
+/hire_date — DATE — 2021-03-01
+/termination_date — DATE (NULLABLE) — NULL
+/current_department_id — UUID (FK → departments) — e7a1a3d0-6c8b-4f2b-9e7c-6d1b1f6b0a11
+/current_position_id — UUID (FK → positions) — b5b11b6f-2a6a-4f1c-8d2d-1b0c6a3b9f77
+/is_manager — BOOLEAN — false
+/country — TEXT — DE
+/lawful_basis — TEXT — Art.6(1)(b) GDPR – employment contract
+/created_at — TIMESTAMPTZ — 2025-09-04 10:30:00+00
+/updated_at — TIMESTAMPTZ — 2025-09-04 10:30:00+00
+/deleted_at — TIMESTAMPTZ (NULLABLE) — NULL
+
+
+TABLE COMPANY.POSITION 
+
+/position_id — UUID — b5b11b6f-2a6a-4f1c-8d2d-1b0c6a3b9f77
+/title — TEXT — Data Engineer
+/job_family — TEXT — Engineering
+/grade — TEXT — P3
+/created_at — TIMESTAMPTZ — 2025-09-04 10:20:00+00
+/updated_at — TIMESTAMPTZ — 2025-09-04 10:20:00+00
+
+
+EVENTS
+TABLE EVENTS.EXTERNAL_ARTIFACTS
+
+/artifact_id — UUID — 7f4e2a19-0c3d-4b0e-9032-2a1b0c7e9d44
+/employee_id — UUID (FK → employees) — 0f3b2f5a-3f2c-4d0a-8ca3-2d3d7a9c5d10
+/artifact_type — TEXT/ENUM —
+                payment_details
+                sick_leave_summary
+                address_change
+                business_trip
+                reimbursement
+                insurance_claim
+                sensitive_note
+/s3_bucket — TEXT — gdpr-sensitive-bucket
+/s3_key — TEXT — payment_details/emp_00123.json
+/hash_sha256 — TEXT (NULLABLE)
+/kms_key_alias — TEXT — alias/finance-key
+/created_at — TIMESTAMPTZ — 2025-09-04 10:50:00+00
