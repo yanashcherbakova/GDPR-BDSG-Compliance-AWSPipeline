@@ -1,9 +1,8 @@
-SCHEMA
 
-COMPANY
+SCHEMA COMPANY
 TABLE COMPANY.DEPARTMENTS
 
-/department_id UUID e7a1a3d0-6c8b-4f2b-9e7c-6d1b1f6b0a11
+/department_id UUID e7a1a3d0-6c8b-4f2b-9e7c-6d1b1f6b0a11 (PK)
 /code TEXT--    HR 
                 AUD 
                 FIN 
@@ -16,7 +15,7 @@ TABLE COMPANY.DEPARTMENTS
                 Audit  
                 Finance
                 Management
-                Develop
+                Development
                 Design
                 Marketing
                 Research & Dev // closed
@@ -26,7 +25,7 @@ TABLE COMPANY.DEPARTMENTS
 
 TABLE COMPANY.EMPLOYEES
 
-/employee_id — UUID — 0f3b2f5a-3f2c-4d0a-8ca3-2d3d7a9c5d10
+/employee_id — UUID — 0f3b2f5a-3f2c-4d0a-8ca3-2d3d7a9c5d10 (PK)
 /employee_no — TEXT — E-00123
 /first_name — TEXT — Anna
 /last_name — TEXT — Schmidt
@@ -35,8 +34,8 @@ TABLE COMPANY.EMPLOYEES
 /phone_work — TEXT — +49-30-1234567
 /hire_date — DATE — 2021-03-01
 /termination_date — DATE (NULLABLE) — NULL
-/current_department_id — UUID (FK → departments) — e7a1a3d0-6c8b-4f2b-9e7c-6d1b1f6b0a11
-/current_position_id — UUID (FK → positions) — b5b11b6f-2a6a-4f1c-8d2d-1b0c6a3b9f77
+/current_department_id — UUID — e7a1a3d0-6c8b-4f2b-9e7c-6d1b1f6b0a11 → (FK → COMPANY.DEPARTMENTS.department_id)
+/current_position_id — UUID b5b11b6f-2a6a-4f1c-8d2d-1b0c6a3b9f77 → (FK → COMPANY.POSITIONS.position_id)
 /is_manager — BOOLEAN — false
 /country — TEXT — DE
 /lawful_basis — TEXT — Art.6(1)(b) GDPR – employment contract
@@ -45,9 +44,9 @@ TABLE COMPANY.EMPLOYEES
 /deleted_at — TIMESTAMPTZ (NULLABLE) — NULL
 
 
-TABLE COMPANY.POSITION 
+TABLE COMPANY.POSITIONS
 
-/position_id — UUID — b5b11b6f-2a6a-4f1c-8d2d-1b0c6a3b9f77
+/position_id — UUID — b5b11b6f-2a6a-4f1c-8d2d-1b0c6a3b9f77 (PK)
 /title — TEXT — Data Engineer
 /job_family — TEXT — Engineering
 /grade — TEXT — P3
@@ -55,11 +54,98 @@ TABLE COMPANY.POSITION
 /updated_at — TIMESTAMPTZ — 2025-09-04 10:20:00+00
 
 
-EVENTS
+TABLE COMPANY.APP_USERS
+
+/actor_id — TEXT — hr_user_42 (PK)
+/employee_id — UUID — 0f3b2f5a-3f2c-4d0a-8ca3-2d3d7a9c5d10 → COMPANY.EMPLOYEES.employee_id
+/role — TEXT
+            - HR
+            - Accountant
+            - Manager
+            - MedicalConsultant
+            - Analyst
+            - DPO
+            - System
+/description - TEXT
+
+
+SCHEMA FINANCE
+
+TABLE FINANCE.SALARY_BANDS
+
+/band_id - UUID - 5a2c7b1e-9d3f-4f1a-8b2e-7c6d5a4b3c21 (PK)
+/job_family - TEXT -
+                    HumanResources / HR
+                        - HR Generalist
+                        - Talent Acquisition
+                        - Payroll & Benefits
+                        - MedicalConsultant
+                    Audit / AUD
+                        - Internal Audit
+                        - Compliance
+                        - Risk & Controls
+                    Finance (FIN)
+                        - Accounting
+                        - Financial Planning & Analysis
+                        - Controlling
+                        - Treasury
+                    Management (MNG)
+                        - Executive Leadership
+                        - Project Management
+                        - Operations Management
+                    Development (DEV)
+                        - Software Engineering
+                        - QA / Testing
+                        - DevOps / Cloud
+                        - Data Engineering
+                    Design (DES)
+                        - UX/UI Design
+                        - Graphic Design
+                        - Product Design
+                    Marketing (MRKT)
+                        - Content Marketing
+                        - Performance Marketing
+                        - PR & Communications
+                        - Brand Management
+                    Research & Dev (RND) -- closed
+                        - Research Scientist
+                        - Data Science
+/grade — TEXT — P3
+/min_salary — NUMERIC(12,2) — 60000.00
+/max_salary — NUMERIC(12,2) — 80000.00
+/currency — TEXT — EUR
+/created_at — TIMESTAMPTZ — 2025-09-04 10:20:00+00
+/updated_at — TIMESTAMPTZ — 2025-09-04 10:20:00+00
+
+
+TABLE FINANCE.EMPLOYEE_COMPENSATION
+
+/comp_id — UUID — c6a2f1b3-8d4e-41a7-92f9-1ab3e7d8f2c0 (PK)
+/employee_id — UUID  — 0f3b2f5a… (FK → COMPANY.employees)
+/band_id — UUID  — 5a2c7b1e… (FK → FINANCE.salary_bands, NULL)
+/base_salary_amount — NUMERIC(12,2) — 72500.00
+/currency — TEXT — EUR
+/effective_from — DATE — 2024-04-01, NULL
+/effective_to — DATE — 2024-04-01, NULL
+/created_at — TIMESTAMPTZ — 2025-09-04 10:20:00+00
+/updated_at — TIMESTAMPTZ — 2025-09-04 10:20:00+00
+
+
+TABLE FINANCE.PAYMENT_DETAILS_REF
+
+/payment_ref_id — UUID — 9db2a7f3-… (PK)
+/employee_id — UUID — 0f3b2f5a… (FK → COMPANY.EMPLOYEES.employee_id)
+/s3_bucket — TEXT — gdpr-sensitive-bucket
+/s3_key — TEXT — payment_details/emp_00123.json
+/kms_key_alias — TEXT — alias/finance-key
+/created_at — TIMESTAMPTZ — 2025-09-04 10:50:00+00
+
+
+SCHEMA EVENTS
 TABLE EVENTS.EXTERNAL_ARTIFACTS
 
-/artifact_id — UUID — 7f4e2a19-0c3d-4b0e-9032-2a1b0c7e9d44
-/employee_id — UUID (FK → employees) — 0f3b2f5a-3f2c-4d0a-8ca3-2d3d7a9c5d10
+/artifact_id — UUID — 7f4e2a19-0c3d-4b0e-9032-2a1b0c7e9d44 (PK)
+/employee_id — UUID — 0f3b2f5a-3f2c-4d0a-8ca3-2d3d7a9c5d10 (FK → COMPANY.EMPLOYEES.employee_id)
 /artifact_type — TEXT/ENUM —
                 payment_details
                 sick_leave_summary
@@ -73,3 +159,20 @@ TABLE EVENTS.EXTERNAL_ARTIFACTS
 /hash_sha256 — TEXT (NULLABLE)
 /kms_key_alias — TEXT — alias/finance-key
 /created_at — TIMESTAMPTZ — 2025-09-04 10:50:00+00
+
+
+TABLE EVENTS.AUDIT_EVENTS
+
+/event_id — UUID — a1b2c3d4-5678-49ab-9cde-0f1a2b3c4d5e (PK)
+/actor_type — TEXT — user / system / job / sevice
+/actor_id — TEXT — hr_user_42
+/event_type — TEXT — EXPORT_S3_LINK
+/object_ref — TEXT — s3://gdpr-sensitive-bucket/sick_leaves/…
+/result — TEXT — deny
+/details — JSONB — {"reason":"role_missing:DPO_READONLY"}
+/occurred_at — TIMESTAMPTZ — 2025-09-04 10:55:00+00
+
+
+FINANCE.employee_compensation.employee_id → COMPANY.employees.employee_id
+FINANCE.payment_details_ref.employee_id → COMPANY.employees.employee_id
+EVENTS.external_artifacts.employee_id → COMPANY.employees.employee_id
