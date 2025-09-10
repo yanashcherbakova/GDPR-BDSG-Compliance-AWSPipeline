@@ -19,5 +19,13 @@
 - Finished the [database schema](synth_data/db_preparation)
 - Studied the legal aspects of audits – their role and implementation
 - Added new section: [Audit Events Logging (§1.3)](Legal_Aspects.md#13-audit-events-logging)
-- Created the SQL script [create_db_postgres.sql](synth_data/create_db_postgres.sql) for database setup
+- Created the SQL script [`create_db_postgres.sql`](synth_data/create_db_postgres.sql) for database setup
 - Database successfully created
+
+
+## Day 4 (September 9, 2025)
+- Finished the script for synthetic data generation and automatic database filling - [`synth_data_generation.py`](synth_data/synth_data_generation.py)
+- Database filled with synthetic data
+- Displayed the current ER diagram
+
+![ER-diagram](pic/dataforge_db.png)
