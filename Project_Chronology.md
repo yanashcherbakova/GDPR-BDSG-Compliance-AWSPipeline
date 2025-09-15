@@ -19,7 +19,7 @@
 - Finished the [database schema](synth_data/db_preparation)
 - Studied the legal aspects of audits – their role and implementation
 - Added new section: [Audit Events Logging (§1.3)](Legal_Aspects.md#13-audit-events-logging)
-- Created the SQL script [`create_db_postgres.sql`](synth_data/create_db_postgres.sql) for database setup
+- Created the SQL script [`create_db_postgres.sql`](db_scripts/create_db_postgres.sql) for database setup
 - Database successfully created
 
 
@@ -29,3 +29,12 @@
 - Displayed the current ER diagram
 
 ![ER-diagram](pic/dataforge_db.png)
+
+## Day 5 (September 10, 2025)
+- Finished SQL-scripts:
+    - [`create_roles_setup.sql`](bd_scripts/create_roles_setup.sql) - Group roles are created here. They are not meant for direct login or database connections. Instead, users inherit their read, write, and administrative permissions through these groups.
+    - [`login_users.sql`](bd_scripts/login_users.sql) - This part creates individual user roles with login and password credentials. Each user is linked to a group role, which defines their effective permissions.
+    - [`company_pii_data_masking.sql`](db_scripts/company_pii_data_masking.sql) - Here we enforce data masking and row-level security for employee records. Only system and DPO roles have unrestricted access; all other roles view masked or filtered data.
+    - [`finance_pii_data_masking.sql`](db_scripts/finance_pii_data_masking.sql) - Similar measures are applied to financial data.
+    - [`events_access.sql`](db_scripts/events_access.sql) - Here we protect audit data: only specific roles can view it, and only the system can add new records.
+    
