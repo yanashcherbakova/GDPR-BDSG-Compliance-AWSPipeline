@@ -37,4 +37,10 @@
     - [`company_pii_data_masking.sql`](db_scripts/company_pii_data_masking.sql) - Here we enforce data masking and row-level security for employee records. Only system and DPO roles have unrestricted access; all other roles view masked or filtered data.
     - [`finance_pii_data_masking.sql`](db_scripts/finance_pii_data_masking.sql) - Similar measures are applied to financial data.
     - [`events_access.sql`](db_scripts/events_access.sql) - Here we protect audit data: only specific roles can view it, and only the system can add new records.
+
+
+## Day 6 (September 15, 2025)
+- Added sections: 
+    - [Data Masking for PII and Sensitive Attributes (§2.1)](Legal_Aspects.md#21-data-masking-for-pii-and-sensitive-attributes)
+    - [Least Privilege and Role-Based Access Control (§2.2)](Legal_Aspects.md#22-least-privilege-and-role-based-access-control)
     

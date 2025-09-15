@@ -113,6 +113,22 @@ Under the [GDPR, Art. 33 – Notification of a personal data breach](https://eur
 Audit events are also critical for handling **Data Subject Access Requests (DSARs)**.  
 According to the [GDPR, Art. 15 – Right of access](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0679#page=43), individuals can request information about how their data has been processed. Audit logs make it possible to provide such proof.  
 
+# II Access Control & Data Isolation Stage
+
+## 2.1 Data Masking for PII and Sensitive Attributes
+
+To comply with [GDPR Article 32(4)](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0679#page=52) and [BDSG §22](https://www.gesetze-im-internet.de/bdsg_2018/__22.html), direct access to PII (Personally Identifiable Information) and other sensitive personal data (such as salaries, dates of birth, or health information) is restricted. Business users (HR, managers, analysts) can only query masked database views, where identifiers and sensitive fields are partially hidden. Full access is granted exclusively to roles with a legal or operational obligation (e.g., DPO, accountants, system services).
+
+### Real data in `COMPANY.EMPLOYEES` table
+![full data](pic/legal_aspects/pii-full-data.png)
+
+### Analyst-view for `COMPANY.EMPLOYEES` table
+![full data](pic/legal_aspects/pii-masked-analyst-view.png)
 
 
+The analyst cannot see exact dates of birth, email addresses, or phone numbers, as the access policies restrict this information. Technically, this is implemented by the script [`company_pii_data_masking.sql`](db_scripts/company_pii_data_masking.sql)
+
+## 2.2 Least Privilege and Role-Based Access Control
+
+In line with the ISO/IEC 27001 security standard and the GDPR principle of necessity, database permissions are assigned following the least privilege principle. Real users authenticate via personal login roles (e.g., `u_hr`, `u_accountant`) and inherit only the minimum rights required for their duties through group roles (app_hr, app_accountant, etc.). This ensures accountability while preventing unauthorized data exposure.
 
