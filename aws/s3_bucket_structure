@@ -1,0 +1,10 @@
+gdpr-sensitive-bucket/
+ ├── hr/
+ ├── finance/
+ │     ├── general/
+ │     ├── payroll/
+ │     └── hr/
+ ├── medical/
+ │     ├── hr/
+ │     └── private/
+ ├── audit/

@@ -43,4 +43,18 @@
 - Added sections: 
     - [Data Masking for PII and Sensitive Attributes (§2.1)](Legal_Aspects.md#21-data-masking-for-pii-and-sensitive-attributes)
     - [Least Privilege and Role-Based Access Control (§2.2)](Legal_Aspects.md#22-least-privilege-and-role-based-access-control)
+
+
+## Day 7 (September 16, 2025)
+- Studied `AWS KMS` (symmetric vs asymmetric keys, customer-managed vs AWS-managed keys)
+- Created an S3 bucket `gdpr-sensitive-bucket` for potential storage of sensitive data
+- Prepared the [`data structure`](aws/s3_bucket_structure) for the S3 bucket (folders for HR, Finance, Medical, Audit) 
+- Created IAM users and IAM roles for isolated access to the bucket
+- Configured inline access policies for the IAM roles:
+    - [`accountant_permissions.json`](aws/permissions/accountant_permissions.json)
+    - [`analyst_permissions.json`](aws/permissions/analyst_permissions.json)
+    - [`data_engineer_permissions.json`](aws/permissions/data_engineer_permissions.json)
+    - [`dpo_permissions.json`](aws/permissions/dpo_permissions.json)
+    - [`hr_permissions.json`](aws/permissions/hr_permissions.json)
+    - [`medical_permissions.json`](aws/permissions/medical_permissions.json)
     
